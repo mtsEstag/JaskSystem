@@ -83,4 +83,22 @@ public class TarefaService {
             return false;
         }
     }
+
+    public List<TarefaDTO> findTaskByUserId(Long id){
+        List<Tarefa> lista = tarefaRepository.findTaskByUserId(id);
+
+        List<TarefaDTO> listaDTO = lista.stream().map(tarefa -> modelMapper.map(tarefa, TarefaDTO.class))
+                .collect(Collectors.toList());
+
+        return listaDTO;
+    }
+
+    public List<TarefaDTO> findByStatus(Long id){
+        List<Tarefa> lista = tarefaRepository.findByStatus(id);
+
+        List<TarefaDTO> listaDTO = lista.stream().map(tarefa -> modelMapper.map(tarefa, TarefaDTO.class))
+                .collect(Collectors.toList());
+
+        return listaDTO;
+    }
 }

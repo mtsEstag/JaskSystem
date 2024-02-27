@@ -11,31 +11,75 @@ import com.example.Jask.Jask.models.Usuario;
 import com.example.Jask.Jask.models.UsuarioDTO;
 import com.example.Jask.Jask.repositories.UsuarioRepository;
 
-
 @Service
 public class UsuarioService {
 
-    @Autowired 
+    @Autowired
     private UsuarioRepository usuarioRepository;
-    
+
     @Autowired
     private ModelMapper modelMapper;
-    
-    public List<UsuarioDTO> findAll(){
+
+    public List<UsuarioDTO> findAll() {
         List<Usuario> lista = usuarioRepository.findAll();
-        List<UsuarioDTO> listaDTO = lista.stream().map(usuario -> modelMapper.map(usuario, UsuarioDTO.class)).collect(Collectors.toList());
+        List<UsuarioDTO> listaDTO = lista.stream().map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                .collect(Collectors.toList());
         return listaDTO;
     }
 
-    public boolean save(Usuario usuario){
+    public UsuarioDTO findById(Long id) {
+
+        boolean existe = usuarioRepository.existsById(id);
+
+        if (existe) {
+
+            Usuario usuario = usuarioRepository.getReferenceById(id);
+
+            UsuarioDTO usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+
+            return usuarioDTO;
+        }
+
+        return new UsuarioDTO();
+    }
+
+    public boolean save(Usuario usuario) {
         boolean exists = usuarioRepository.existsByCpf(usuario.getCpf());
-        if(exists){
+        if (exists) {
             return !exists;
-        }else{
+        } else {
             usuarioRepository.save(usuario);
             return !exists;
         }
-        
+
+    }
+
+    public void deleteById(Long id) {
+
+        boolean existe = usuarioRepository.existsById(id);
+
+        if (existe) {
+
+            usuarioRepository.deleteById(id);
+        }
+    }
+    
+
+    public boolean update(UsuarioDTO usuarioDTO) {
+
+        try {
+
+            Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
+
+            usuarioRepository.save(usuario);
+
+            return true;
+        } catch (Exception e) {
+
+            System.out.println(e.getLocalizedMessage());
+
+            return false;
+        }
     }
 
 }

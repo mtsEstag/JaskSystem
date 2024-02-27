@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.example.Jask.Jask.models.Usuario;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
-    
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
     public boolean existsByCpf(Long cpf);
+
+
 }

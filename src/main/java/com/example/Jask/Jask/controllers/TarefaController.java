@@ -67,8 +67,21 @@ public class TarefaController {
 
     }
 
+    @GetMapping("/findByUser/{id}")
+    public List<TarefaDTO> findTaskByUserId(@PathVariable Long id){
+        List<TarefaDTO> lista = tarefaService.findTaskByUserId(id);
+        return lista;
+    }
+
+
+    @GetMapping("/findByStatus/{id}")
+    public List<TarefaDTO> findByStatus(@PathVariable Long id){
+        List<TarefaDTO> lista = tarefaService.findByStatus(id);
+        return lista;
+    }
+
+
     
 }
-
 
 
