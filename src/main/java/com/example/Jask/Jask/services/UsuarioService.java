@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.Jask.Jask.models.Usuario;
@@ -25,6 +27,11 @@ public class UsuarioService {
         List<UsuarioDTO> listaDTO = lista.stream().map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
                 .collect(Collectors.toList());
         return listaDTO;
+    }
+
+    public Page<Usuario> findAllPage(Pageable pageable){
+        Page<Usuario> lista = usuarioRepository.findAll(pageable);
+        return lista;
     }
 
     public UsuarioDTO findById(Long id) {
@@ -80,6 +87,16 @@ public class UsuarioService {
 
             return false;
         }
+    }
+
+    public List<UsuarioDTO> findByName(String nome){
+
+        List<Usuario> lista = usuarioRepository.findByName(nome);
+
+        List<UsuarioDTO> listaDTO = lista.stream().map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                .collect(Collectors.toList());
+
+        return listaDTO;
     }
 
 }

@@ -3,6 +3,8 @@ package com.example.Jask.Jask.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,15 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
+    @GetMapping("/usuarioAll")
     public List<UsuarioDTO> findAll() {
         List<UsuarioDTO> lista = usuarioService.findAll();
+        return lista;
+    }
+
+    @GetMapping
+    public Page<Usuario> findAllPage(Pageable pageable){
+        Page<Usuario> lista = usuarioService.findAllPage(pageable);
         return lista;
     }
 
@@ -69,6 +77,12 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body(null);
         }
 
+    }
+
+    @GetMapping("/findByName/{nome}")
+    public List<UsuarioDTO> findByName(@PathVariable String nome){
+        List<UsuarioDTO> lista = usuarioService.findByName(nome);
+        return lista;
     }
 
 }
