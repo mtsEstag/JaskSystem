@@ -28,7 +28,7 @@ public class Tarefa {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario") // nome da coluna na tabela 'tarefa' que referencia o usuario
+    @JoinColumn(name = "id_usuario") 
     private Usuario usuario;
 
 }

@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.Jask.Jask.models.Tarefa;
@@ -32,11 +33,10 @@ public class TarefaService {
         return listaDTO;
     }
 
-    public Page<Tarefa> findAllPage(Pageable pageable){
+    public Page<Tarefa> findAllPage(Pageable pageable) {
         Page<Tarefa> lista = tarefaRepository.findAll(pageable);
         return lista;
     }
-
 
     public TarefaDTO findById(Long id) {
 
@@ -54,14 +54,12 @@ public class TarefaService {
         return new TarefaDTO();
     }
 
-
     public void save(TarefaDTO tarefaDTO) {
 
         Tarefa tarefa = modelMapper.map(tarefaDTO, Tarefa.class);
 
         tarefaRepository.save(tarefa);
     }
-
 
     public void deleteById(Long id) {
 
@@ -72,7 +70,6 @@ public class TarefaService {
             tarefaRepository.deleteById(id);
         }
     }
-    
 
     public boolean update(TarefaDTO tarefaDTO) {
 
@@ -91,7 +88,7 @@ public class TarefaService {
         }
     }
 
-    public List<TarefaDTO> findTaskByUserId(Long id){
+    public List<TarefaDTO> findTaskByUserId(Long id) {
         List<Tarefa> lista = tarefaRepository.findTaskByUserId(id);
 
         List<TarefaDTO> listaDTO = lista.stream().map(tarefa -> modelMapper.map(tarefa, TarefaDTO.class))
@@ -100,12 +97,52 @@ public class TarefaService {
         return listaDTO;
     }
 
-    public List<TarefaDTO> findByStatus(Long id){
+    public List<TarefaDTO> findByStatus(Long id) {
         List<Tarefa> lista = tarefaRepository.findByStatus(id);
 
         List<TarefaDTO> listaDTO = lista.stream().map(tarefa -> modelMapper.map(tarefa, TarefaDTO.class))
                 .collect(Collectors.toList());
 
         return listaDTO;
+    }
+    public boolean avancar(Long id) {
+
+        boolean existe = tarefaRepository.existsById(id);
+        if (existe) {
+            TarefaDTO tarefaDTO = findById(id);
+            Long idTarefa = tarefaDTO.getIdTarefa();
+            Long idStatus = tarefaDTO.getIdStatus();
+            if(idStatus == 1 || idStatus == 2){
+                tarefaRepository.updateStatus(idTarefa, idStatus+1);
+                return true;
+            }
+            else{
+                System.out.println("Tarefa ja foi concluida");
+                return false;
+            }
+            
+        }
+        return false;
+
+    }
+    public boolean retroceder(Long id) {
+
+        boolean existe = tarefaRepository.existsById(id);
+        if (existe) {
+            TarefaDTO tarefaDTO = findById(id);
+            Long idTarefa = tarefaDTO.getIdTarefa();
+            Long idStatus = tarefaDTO.getIdStatus();
+            if(idStatus == 3 || idStatus == 2){
+                tarefaRepository.updateStatus(idTarefa, idStatus-1);
+                return true;
+            }
+            else{
+                System.out.println("Tarefa ainda em estado inicial");
+                return false;
+            }
+            
+        }
+        return false;
+
     }
 }

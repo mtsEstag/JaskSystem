@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Jask.Jask.models.TarefaDTO;
+import com.example.Jask.Jask.models.Usuario;
+import com.example.Jask.Jask.repositories.TarefaRepository;
+import com.example.Jask.Jask.models.Status;
 import com.example.Jask.Jask.models.Tarefa;
 import com.example.Jask.Jask.services.TarefaService;
 
@@ -25,6 +28,9 @@ public class TarefaController {
 
     @Autowired
     private TarefaService tarefaService;
+
+    @Autowired
+    private TarefaRepository tarefaRepository;
 
     @GetMapping("/tarefaAll")
     public List<TarefaDTO> findAll() {
@@ -76,14 +82,46 @@ public class TarefaController {
 
     @GetMapping("/findByUser/{id}")
     public List<TarefaDTO> findTaskByUserId(@PathVariable Long id) {
+
         List<TarefaDTO> lista = tarefaService.findTaskByUserId(id);
+
         return lista;
     }
 
     @GetMapping("/findByStatus/{id}")
     public List<TarefaDTO> findByStatus(@PathVariable Long id) {
+
         List<TarefaDTO> lista = tarefaService.findByStatus(id);
+
         return lista;
     }
+
+    @PutMapping("/avancar/{id}")
+    public ResponseEntity<String> avancar(@PathVariable Long id) {
+
+        boolean sucesso = tarefaService.avancar(id);
+
+        if (sucesso) {
+
+            return ResponseEntity.ok("Atualizado com sucesso");
+        }
+
+        return ResponseEntity.status(500).body("Houve um erro interno no servidor");
+    }
+
+    @PutMapping("/retroceder/{id}")
+    public ResponseEntity<String> retroceder(@PathVariable Long id) {
+
+        boolean sucesso = tarefaService.retroceder(id);
+
+        if (sucesso) {
+
+            return ResponseEntity.ok("Atualizado com sucesso");
+        }
+
+        return ResponseEntity.status(500).body("Houve um erro interno no servidor");
+    }
+
+
 
 }
