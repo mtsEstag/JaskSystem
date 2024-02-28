@@ -26,6 +26,6 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Tarefa t SET t.status.idStatus = :idStatus2 WHERE t.idTarefa = :idTarefa2")
-    void updateStatus(@Param("idTarefa2") Long idTarefa, @Param("idStatus2") Long idStatus);
+    @Query("UPDATE Tarefa t SET t.status.idStatus = :id WHERE t.idTarefa = :tarefa")
+    void updateStatus(@Param("tarefa") Long idTarefa, @Param("id") Long idStatus);
 }

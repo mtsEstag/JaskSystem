@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Jask.Jask.models.TarefaDTO;
-import com.example.Jask.Jask.models.Usuario;
-import com.example.Jask.Jask.repositories.TarefaRepository;
-import com.example.Jask.Jask.models.Status;
 import com.example.Jask.Jask.models.Tarefa;
 import com.example.Jask.Jask.services.TarefaService;
 
@@ -28,9 +25,6 @@ public class TarefaController {
 
     @Autowired
     private TarefaService tarefaService;
-
-    @Autowired
-    private TarefaRepository tarefaRepository;
 
     @GetMapping("/tarefaAll")
     public List<TarefaDTO> findAll() {
@@ -121,7 +115,5 @@ public class TarefaController {
 
         return ResponseEntity.status(500).body("Houve um erro interno no servidor");
     }
-
-
 
 }

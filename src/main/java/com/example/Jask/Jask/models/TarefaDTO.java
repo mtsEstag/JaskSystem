@@ -12,6 +12,7 @@ public class TarefaDTO {
     private String descricao;
     private Date dataCriacao;
     private Long idStatus;
+    private String nomeStatus;
     private Long idUsuario;
 
 }

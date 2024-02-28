@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.Jask.Jask.models.Tarefa;
@@ -105,6 +104,7 @@ public class TarefaService {
 
         return listaDTO;
     }
+
     public boolean avancar(Long id) {
 
         boolean existe = tarefaRepository.existsById(id);
@@ -112,19 +112,19 @@ public class TarefaService {
             TarefaDTO tarefaDTO = findById(id);
             Long idTarefa = tarefaDTO.getIdTarefa();
             Long idStatus = tarefaDTO.getIdStatus();
-            if(idStatus == 1 || idStatus == 2){
-                tarefaRepository.updateStatus(idTarefa, idStatus+1);
+            if (idStatus == 1 || idStatus == 2) {
+                tarefaRepository.updateStatus(idTarefa, idStatus + 1);
                 return true;
-            }
-            else{
+            } else {
                 System.out.println("Tarefa ja foi concluida");
                 return false;
             }
-            
+
         }
         return false;
 
     }
+
     public boolean retroceder(Long id) {
 
         boolean existe = tarefaRepository.existsById(id);
@@ -132,15 +132,14 @@ public class TarefaService {
             TarefaDTO tarefaDTO = findById(id);
             Long idTarefa = tarefaDTO.getIdTarefa();
             Long idStatus = tarefaDTO.getIdStatus();
-            if(idStatus == 3 || idStatus == 2){
-                tarefaRepository.updateStatus(idTarefa, idStatus-1);
+            if (idStatus == 3 || idStatus == 2) {
+                tarefaRepository.updateStatus(idTarefa, idStatus - 1);
                 return true;
-            }
-            else{
+            } else {
                 System.out.println("Tarefa ainda em estado inicial");
                 return false;
             }
-            
+
         }
         return false;
 
